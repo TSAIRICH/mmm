@@ -1,0 +1,29 @@
+{
+  "generated_on": "2026-06-15",
+  "naming_rule": "OO年-科目.pdf",
+  "download_attempt": {
+    "status": "blocked_403_from_current_container",
+    "observed_error": "CONNECT tunnel failed, response 403"
+  },
+  "tasks": [
+    {
+      "task": "local_government_legal_system",
+      "exam": "地方政府特考三等-法制",
+      "source_page": "https://lawyer.get.com.tw/exam/List.aspx?iPageNo=1&sFilter=%e5%9c%b0%e6%96%b9%e6%94%bf%e5%ba%9c%e7%89%b9%e8%80%83%e4%b8%89%e7%ad%89-%e6%b3%95%e5%88%b6&sFilterType=0",
+      "years": [114,113,112,111,110,109,108,107,106,105],
+      "subjects": ["民法","民事訴訟法與刑事訴訟法","行政法","刑法"],
+      "item_count": 40,
+      "default_status": "pending_source_verification"
+    },
+    {
+      "task": "judicial_third_clerk",
+      "exam": "特考三等-司法人員(法院書記官)",
+      "source_page": "https://lawyer.get.com.tw/exam/List.aspx?iPageNo=1&sFilter=%e7%89%b9%e8%80%83%e4%b8%89%e7%ad%89-%e5%8f%b8%e6%b3%95%e4%ba%ba%e5%93%a1%28%e6%b3%95%e9%99%a2%e6%9b%b8%e8%a8%98%e5%ae%98%29&sFilterType=0",
+      "years": [114,113,112,111,110,109,108,107,106,105],
+      "subjects": ["民法概要","刑法概要","民事訴訟法概要與刑事訴訟法概要","行政法概要"],
+      "item_count": 40,
+      "default_status": "pending_source_verification",
+      "note": "Requested task uses 三等 label with 概要 subjects; exact title/subject match must be verified before marking downloaded."
+    }
+  ]
+}
