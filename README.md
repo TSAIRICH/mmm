@@ -1,41 +1,80 @@
-# 高考三級-法制考古題下載任務
+# 台灣國考考古題下載整理
 
-本次任務範圍為高點法律網公開考古題頁面中的「高考三級-法制」。
+本 repo 用於整理公開網站上的國考考古題下載任務、manifest、可重跑腳本與執行摘要。
 
-- 來源頁面：https://lawyer.get.com.tw/exam/List.aspx?iPageNo=1&sFilter=%e9%ab%98%e8%80%83%e4%b8%89%e7%b4%9a-%e6%b3%95%e5%88%b6&sFilterType=0
-- 年度範圍：114 年至 105 年
+## 已整理任務
+
+### 高考三級-法制
+
+- 年度：114 年至 105 年
 - 科目：民法、民事訴訟法與刑事訴訟法、行政法、刑法
-- 命名規則：`OO年-科目.pdf`
-- 本次執行日期：2026-06-15
+- 來源頁面：https://lawyer.get.com.tw/exam/List.aspx?iPageNo=1&sFilter=%e9%ab%98%e8%80%83%e4%b8%89%e7%b4%9a-%e6%b3%95%e5%88%b6&sFilterType=0
+- 既有成果：
+  - `manifests/gaokao3_legal_114-105_manifest.csv`
+  - `scripts/download_gaokao3_legal.py`
+  - `outputs/gaokao3_legal_114-105_summary.md`
 
-## 本次狀態
+### 地方政府特考三等-法制
 
-已從公開頁面確認 40 個符合條件的年度與科目項目。由於目前執行環境直連 `lawyer.get.com.tw` 與 `fd.get.com.tw` 題檔下載端時回傳 403，且瀏覽器工具讀取 PDF 入口時出現 timeout、429 或安全開啟限制，因此本次未把 PDF 題檔直接寫入 repo。
+- 年度：114 年至 105 年
+- 科目：民法、民事訴訟法與刑事訴訟法、行政法、刑法
+- 來源頁面：https://lawyer.get.com.tw/exam/List.aspx?iPageNo=1&sFilter=%e5%9c%b0%e6%96%b9%e6%94%bf%e5%ba%9c%e7%89%b9%e8%80%83%e4%b8%89%e7%ad%89-%e6%b3%95%e5%88%b6&sFilterType=0
+- 本次 fallback 成果：
+  - `manifests/remaining_default_tasks_manifest.json`
+  - `scripts/download_exam_papers.py`
+  - `outputs/remaining_default_tasks_summary.md`
 
-已改用 fallback 方式提交下列可重跑成果：
+### 特考三等-司法人員(法院書記官)
 
-- `manifests/gaokao3_legal_114-105_manifest.csv`：40 筆下載清單、來源頁、預期檔名、狀態與備註。
-- `scripts/download_gaokao3_legal.py`：可重跑的下載腳本，會讀取 manifest，嘗試解析來源頁中的 `Download.ashx` 入口並下載 PDF。
-- `outputs/gaokao3_legal_114-105_summary.md`：本次整理與缺漏摘要。
+- 年度：114 年至 105 年
+- 科目：民法概要、刑法概要、民事訴訟法概要與刑事訴訟法概要、行政法概要
+- 來源頁面：https://lawyer.get.com.tw/exam/List.aspx?iPageNo=1&sFilter=%e7%89%b9%e8%80%83%e4%b8%89%e7%ad%89-%e5%8f%b8%e6%b3%95%e4%ba%ba%e5%93%a1%28%e6%b3%95%e9%99%a2%e6%9b%b8%e8%a8%98%e5%ae%98%29&sFilterType=0
+- 本次 fallback 成果：
+  - `manifests/remaining_default_tasks_manifest.json`
+  - `scripts/download_exam_papers.py`
+  - `outputs/remaining_default_tasks_summary.md`
 
-## 使用方式
+## 命名規則
 
-在可連外且可正常存取高點下載端的環境中執行：
+下載後的 PDF 檔名主體統一使用：
 
-```bash
-python scripts/download_gaokao3_legal.py \
-  --manifest manifests/gaokao3_legal_114-105_manifest.csv \
-  --output-dir outputs/gaokao3_legal_pdfs
+```text
+OO年-科目.pdf
 ```
 
-腳本會：
+例如：
 
-1. 讀取 manifest 中的年度、科目與來源頁。
-2. 若 manifest 已有可用下載 URL，優先使用。
-3. 若尚未解析下載 URL，重新抓取來源頁並比對考試類組、科目與年度。
-4. 依命名規則輸出 PDF，例如 `114年-民法.pdf`。
-5. 在輸出資料夾內寫入 `download_report.csv`，記錄成功、缺漏或失敗原因。
+```text
+114年-民法.pdf
+114年-民事訴訟法與刑事訴訟法.pdf
+```
 
-## 注意
+## 本次 GitHub fallback 狀態
 
-manifest 中狀態為 `listed_pending_download` 表示已在公開清單中確認有該筆資料，但本環境未能直接下載 PDF。狀態為 `download_url_observed` 表示本次工具曾成功開啟或看到該下載入口，但仍未在容器內完成檔案下載。
+2026-06-15 本次執行時，外部來源頁與題檔下載端在目前容器環境回傳：
+
+```text
+CONNECT tunnel failed, response 403
+```
+
+因此未將 PDF 題檔標示為已下載，也未把未驗證題檔寫入 repo。已改為建立完整預期 manifest、可重跑腳本與結果摘要。manifest 中的 `pending_source_verification` 表示該筆是使用者指定範圍內的預期項目，仍需在可連到 `lawyer.get.com.tw` 的環境中由腳本驗證來源頁與下載入口。
+
+## 重跑方式
+
+地方政府特考三等-法制：
+
+```bash
+python scripts/download_exam_papers.py \
+  --manifest manifests/remaining_default_tasks_manifest.json \
+  --output-dir outputs/local_government_legal_system_pdfs
+```
+
+特考三等-司法人員(法院書記官)：
+
+```bash
+python scripts/download_exam_papers.py \
+  --manifest manifests/remaining_default_tasks_manifest.json \
+  --output-dir outputs/judicial_third_clerk_pdfs
+```
+
+腳本會依 manifest 逐筆重新抓取來源頁、比對考試類別/年度/科目、解析下載入口、下載 PDF，並在輸出資料夾建立 `download_report.csv`。
