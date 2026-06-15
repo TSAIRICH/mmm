@@ -14,6 +14,7 @@ from urllib.parse import urljoin
 from urllib.request import Request, urlopen
 
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/125.0 Safari/537.36"
+DOWNLOAD_LINK_RE = re.compile(r"<a[^>]+href=[\"']([^\"']*Download\.ashx[^\"']*)[\"'][^>]*>(.*?)</a>", re.I | re.S)
 
 
 def fetch_text(url: str, timeout: int) -> str:
@@ -40,8 +41,7 @@ def normalize(value: str) -> str:
 
 def candidate_downloads(page_html: str, source_url: str) -> list[tuple[str, str]]:
     candidates: list[tuple[str, str]] = []
-    pattern = r'<a[^>]+href=["\\\']([^"\\\']*Download\\.ashx[^"\\\']*)["\\\'][^>]*>(.*?)</a>'
-    for match in re.finditer(pattern, page_html, re.I | re.S):
+    for match in DOWNLOAD_LINK_RE.finditer(page_html):
         start = max(0, match.start() - 500)
         end = min(len(page_html), match.end() + 500)
         context = re.sub(r"<[^>]+>", " ", page_html[start:end])
